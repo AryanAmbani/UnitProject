@@ -1,4 +1,12 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
 
+
+PImage Kill;
 float circlex [];
 float circley [];
 float xdirection [];
@@ -7,11 +15,15 @@ float x = 20;
 float y = 20;
 int diff =1;
 int lasttime=0;
-
+int screen= 1;
+Minim minim;
+AudioPlayer boink;
 void setup()
 {
+  //minim = new minim(this);
+  //groove= minim.loadFile("Boink.mp3");
   fullScreen();
-
+  Kill=loadImage("Kill.png");
 
   circlex= new float [100];
   circley= new float [100];
@@ -29,44 +41,53 @@ void setup()
 
 void draw()
 {
-  background(0);
-  for (int i=0; i<diff; i++)
+  if (screen== 1)
   {
-    fill(155, 48, 255);
-    ellipse(circlex[i], circley[i], x, y);
+    background(0);
+    for (int i=0; i<diff; i++)
+    {
 
-    circlex[i] = circlex[i] + xdirection[i];
-    circley[i] = circley[i] + ydirection[i];
+      fill(1, 100, 230);
+      ellipse(circlex[i], circley[i], x, y);
 
-    if (circlex[i]> width)
-    {
-      xdirection[i]= xdirection[i] *-1;
-    }
+      circlex[i] = circlex[i] + xdirection[i];
+      circley[i] = circley[i] + ydirection[i];
 
-    if (circlex[i]<0)
-    {
-      xdirection[i] = xdirection[i] *-1;
-    }
-    if (circley[i]> height)
-    {
-      ydirection[i] = ydirection [i] *-1;
-    }
-    if (circley[i]< 0)
-    {
-      ydirection[i] = ydirection [i] * -1;
-    }
+      if (circlex[i]> width)
+      {
+        xdirection[i]= xdirection[i] *-1;
+      }
 
-    if  (dist(circlex[i], circley[i])=mouseX, mouseY)
-    {
-      background(255);
-      
+      if (circlex[i]<0)
+      {
+        xdirection[i] = xdirection[i] *-1;
+      }
+      if (circley[i]> height)
+      {
+        ydirection[i] = ydirection [i] *-1;
+      }
+      if (circley[i]< 0)
+      {
+        ydirection[i] = ydirection [i] * -1;
+      }
+      if  (dist(circlex[i], circley[i], mouseX, mouseY)<20)
+      {
 
-    if (millis() - lasttime > 1000)
-    {
-      lasttime=millis();
-      diff = diff +1;
+        screen =2;
+
+        if (millis() - lasttime > 1000)
+        {
+          lasttime=millis();
+          diff = diff +1;
+        }
+        fill(random(255), random(255), random(255), random(255)); 
+        ellipse(mouseX, mouseY, 10, 10);
+      }
     }
-    fill(random(255), random(255), random(255), random(255)); 
-    ellipse(mouseX, mouseY, 10, 10);
   }
-//}
+  if (screen ==2)
+  {
+    background(255);
+        text("GAME OVER", height/2, width/2);
+  }
+}
