@@ -6,7 +6,7 @@ import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
 
-PImage Kill;
+//PImage Kill;
 float circlex [];
 float circley [];
 float xdirection [];
@@ -20,10 +20,10 @@ Minim minim;
 AudioPlayer boink;
 void setup()
 {
-  //minim = new minim(this);
-  //groove= minim.loadFile("Boink.mp3");
-  fullScreen();
-  Kill=loadImage("Kill.png");
+  minim = new Minim(this);
+  boink = minim.loadFile("Boink.mp3");
+  fullScreen(P3D);
+  //Kill=loadImage("Kill.png");
 
   circlex= new float [100];
   circley= new float [100];
@@ -41,7 +41,7 @@ void setup()
 
 void draw()
 {
-  if (screen== 1)
+  if (screen == 1)
   {
     background(0);
     for (int i=0; i<diff; i++)
@@ -62,32 +62,38 @@ void draw()
       {
         xdirection[i] = xdirection[i] *-1;
       }
+      
       if (circley[i]> height)
       {
         ydirection[i] = ydirection [i] *-1;
       }
+      
       if (circley[i]< 0)
       {
         ydirection[i] = ydirection [i] * -1;
       }
-      if  (dist(circlex[i], circley[i], mouseX, mouseY)<20)
+      
+      if  (dist(circlex[i], circley[i], mouseX, mouseY)<10)
       {
-
         screen =2;
-
-        if (millis() - lasttime > 1000)
-        {
-          lasttime=millis();
-          diff = diff +1;
-        }
-        fill(random(255), random(255), random(255), random(255)); 
-        ellipse(mouseX, mouseY, 10, 10);
+        break;
       }
+      
+      if (millis() - lasttime > 1000)
+      {
+        lasttime=millis();
+        diff = diff +1;
+      }
+      
+      fill(random(255), random(255), random(255), random(255)); 
+      ellipse(mouseX, mouseY, 10, 10);
     }
   }
-  if (screen ==2)
+
+  if (screen == 2)
   {
     background(255);
-        text("GAME OVER", height/2, width/2);
+    boink.play();
+    text("HA TRY HARDER", height/2, width/2);
   }
 }
