@@ -1,3 +1,5 @@
+//This is where i added the minim files.
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -6,7 +8,7 @@ import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
 
-//PImage Kill;
+// all of my varibales.
 float circlex [];
 float circley [];
 float xdirection [];
@@ -18,8 +20,11 @@ int lasttime=0;
 int screen= 1;
 Minim minim;
 AudioPlayer boink;
+
+
 void setup()
 {
+  //this added the sound to the music.
   minim = new Minim(this);
   boink = minim.loadFile("Boink.mp3");
   fullScreen(P3D);
@@ -53,6 +58,7 @@ void draw()
       circlex[i] = circlex[i] + xdirection[i];
       circley[i] = circley[i] + ydirection[i];
 
+//bounces the circles all around the screen
       if (circlex[i]> width)
       {
         xdirection[i]= xdirection[i] *-1;
@@ -72,13 +78,13 @@ void draw()
       {
         ydirection[i] = ydirection [i] * -1;
       }
-      
+      // this is the collision detection 
       if  (dist(circlex[i], circley[i], mouseX, mouseY)<10)
       {
         screen =2;
         break;
       }
-      
+      // this spawns a circle each second
       if (millis() - lasttime > 1000)
       {
         lasttime=millis();
@@ -89,11 +95,11 @@ void draw()
       ellipse(mouseX, mouseY, 10, 10);
     }
   }
-
+// this is the death screen
   if (screen == 2)
   {
     background(255);
-    boink.play();
+    fill(0);
     text("HA TRY HARDER", height/2, width/2);
   }
 }
